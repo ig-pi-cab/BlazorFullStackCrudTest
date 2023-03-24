@@ -1,0 +1,62 @@
+﻿@page "/productos"
+@inject IProductoService ProductoService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Productos</PageTitle>
+
+<h3>Productos</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Model</th>
+            <th>Brand</th>
+            <th>Code</th>
+            <th>Stock</th>
+            <th>Categoria</th>
+            <th>Producto Tipo</th>
+            <th>ImgURL</th>
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (var producto in ProductoService.Productos)
+        {
+            <tr>
+                <td>@producto.Id</td>
+                <td>@producto.Name</td>
+                <td>@producto.Model</td>
+                <td>@producto.Brand</td>
+                <td>@producto.Code</td>
+                <td>@producto.Stock</td>
+                <td>@producto.Categoria</td>
+                <td>@producto.ProductoTipo.Name</td>
+                <td>
+                    <img src="@producto.ImgURL" width="150px">
+             
+                    </td>
+                <td>
+                    <button class="btn btn-primary" @onclick="(() => ShowProducto(producto.Id))"><i class="oi oi-pencil "></i></button>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    //lifecycle methods
+    protected override async Task OnInitializedAsync()
+    {
+        await ProductoService.GetProductos();
+    }
+
+    void ShowProducto(int id)
+    {
+        NavigationManager.NavigateTo($"producto/{id}");
+    }
+}
